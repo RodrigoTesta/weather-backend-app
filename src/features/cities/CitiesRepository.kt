@@ -12,7 +12,7 @@ object CitiesRepository {
 
     private val mapper by lazy { jacksonObjectMapper().configure(UnknownProps, false) }
     private val cities by lazy {
-        mapper.readValue<List<City>>(File("here_goes_json_cities_path"))
+        mapper.readValue<List<City>>(File("path_to_cities.json"))
     }
 
     fun getSuggestions(hint: String) =

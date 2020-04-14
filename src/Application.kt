@@ -27,6 +27,7 @@ fun Application.module(testing: Boolean = false) {
     val client = HttpClient(OkHttp) {
     }
 
+
     install(ContentNegotiation) {
         jackson {}
     }
@@ -70,28 +71,7 @@ fun Application.module(testing: Boolean = false) {
     }
 
     routing {
-        get("/suggestions/cities/{hint}") {
-            call.parameters["hint"]?.let { hint ->
-                call.respond(CitiesRepository.getSuggestions(hint))
-            } ?: run {
-                throw IllegalArgumentException("Hint must be provided")
-            }
-        }
-
-        get("/weather/cities") {
-            call.respond(
-                OpenWeatherService.getWeatherForTopFiveCities()
-            )
-        }
-
-        get("/weather/cities/{city}") {
-            call.parameters["city"]?.let { city ->
-                call.respond(OpenWeatherService.getWeatherByCityId(city))
-            } ?: run {
-                throw IllegalArgumentException("City must be provided")
-            }
-
-        }
-
+        suggestions()
+        weather()
     }
 }
