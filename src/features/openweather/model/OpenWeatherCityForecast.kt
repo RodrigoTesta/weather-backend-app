@@ -2,7 +2,7 @@ package com.example.features.openweather.model
 
 import com.example.features.cities.model.Location
 
-data class CityForecast(
+data class OpenWeatherCityForecast(
     val id: Int,
     val name: String,
     val coord: Location,

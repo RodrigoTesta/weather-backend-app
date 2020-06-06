@@ -1,7 +1,7 @@
 package com.example.features.cities
 
-import com.example.features.cities.model.Suggestion
 import com.example.features.cities.model.City
+import com.example.features.cities.model.Suggestion
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File

@@ -1,9 +1,9 @@
 package com.example.features.openweather
 
 import com.example.features.cities.model.Location
-import com.example.features.openweather.model.CityForecast
-import com.example.features.openweather.model.ExtendedForecast
-import com.example.features.openweather.model.ForecastData
+import com.example.features.openweather.model.OpenWeatherCityForecast
+import com.example.features.openweather.model.OpenWeatherAllData
+import com.example.features.openweather.model.OpenWeatherForecastData
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
@@ -41,7 +41,7 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<CityForecast>(this) }
+            .run { mapper.readValue<OpenWeatherCityForecast>(this) }
 
 
     //api.openweathermap.org/data/2.5/weather?id={city id}&appid={your api key}
@@ -60,7 +60,7 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<CityForecast>(this) }
+            .run { mapper.readValue<OpenWeatherCityForecast>(this) }
 
 
     //api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={your api key}
@@ -79,7 +79,7 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<ForecastData>(this) }
+            .run { mapper.readValue<OpenWeatherForecastData>(this) }
 
 
     fun getWeatherByLatLon(location: Location, language: String, unit: String) =
@@ -95,13 +95,15 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<CityForecast>(this) }
+            .run { mapper.readValue<OpenWeatherCityForecast>(this) }
 
-    //https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&appid={YOUR API KEY}
+    //https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
 
-    fun getWeatherOneCall(latitude: Double, longitude: Double, language: String, unit: String) =
+    fun getWeatherOneCall(latitude: Double, longitude: Double, language: String, unit: String, exclude: String?) {
+        var url = "$API_WEATHER_ONE_CALL?lat=${latitude}&lon=${longitude}&lang=$language&units=$unit&appid=$API_WEATHER_KEY"
+        exclude?.apply { url = "$url&exclude=$exclude" }
         NewRequest()
-            .url("$API_WEATHER_ONE_CALL?lat=${latitude}&lon=${longitude}&lang=$language&units=$unit&appid=$API_WEATHER_KEY")
+            .url(url)
             .build()
             .let {
                 Client()
@@ -112,6 +114,7 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<ExtendedForecast>(this) }
+            .run { mapper.readValue<OpenWeatherAllData>(this) }
+    }
 }
 

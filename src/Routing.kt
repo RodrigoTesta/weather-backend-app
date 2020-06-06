@@ -1,7 +1,7 @@
 package com.example
 
 import com.example.features.cities.CitiesRepository
-import com.example.features.openweather.OpenWeatherService
+import com.example.features.openweather.WeatherService
 import io.ktor.application.call
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -23,7 +23,7 @@ fun Route.weather() {
         val lang = call.parameters["language"] ?: "sp"
         val unit = call.parameters["unit"] ?: "metric"
         call.respond(
-            OpenWeatherService.getWeatherForTopFiveCities(lang, unit)
+            WeatherService.getWeatherForTopFiveCities(lang, unit)
         )
     }
 
@@ -31,7 +31,7 @@ fun Route.weather() {
         val lang = call.parameters["language"] ?: "sp"
         val unit = call.parameters["unit"] ?: "metric"
         call.parameters["city"]?.let { city ->
-            call.respond(OpenWeatherService.getWeatherByCityId(city, lang, unit))
+            call.respond(WeatherService.getWeatherByCityId(city, lang, unit))
         } ?: run {
             throw IllegalArgumentException("City must be provided")
         }
@@ -46,7 +46,7 @@ fun Route.weather() {
         val lang = call.parameters["language"] ?: "sp"
         val unit = call.parameters["unit"] ?: "metric"
 
-        call.respond(OpenWeatherService.getOneCallWeather(lat, lon, lang, unit))
+        call.respond(WeatherService.getOneCallWeather(lat, lon, lang, unit))
 
     }
 }

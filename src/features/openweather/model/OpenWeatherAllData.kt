@@ -1,6 +1,6 @@
 package com.example.features.openweather.model
 
-data class ExtendedForecast(
+data class OpenWeatherAllData(
     val lat: Double,
     val lon: Double,
     val timezone: String,
