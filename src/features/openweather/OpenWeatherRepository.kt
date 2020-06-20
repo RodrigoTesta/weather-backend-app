@@ -99,7 +99,7 @@ object OpenWeatherRepository {
 
     //https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
 
-    fun getWeatherOneCall(latitude: Double, longitude: Double, language: String, unit: String, exclude: String?) {
+    fun getWeatherOneCall(latitude: Double, longitude: Double, language: String, unit: String, exclude: String? = null) {
         var url = "$API_WEATHER_ONE_CALL?lat=${latitude}&lon=${longitude}&lang=$language&units=$unit&appid=$API_WEATHER_KEY"
         exclude?.apply { url = "$url&exclude=$exclude" }
         NewRequest()
