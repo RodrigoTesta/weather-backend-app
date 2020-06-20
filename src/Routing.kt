@@ -9,7 +9,7 @@ import io.ktor.routing.get
 
 
 fun Route.suggestions() {
-    get("/suggestions/cities/{hint}") {
+    get("/autocomplete/cities/{hint}") {
         call.parameters["hint"]?.let { hint ->
             call.respond(CitiesRepository.getSuggestions(hint))
         } ?: run {

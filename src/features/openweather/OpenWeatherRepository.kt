@@ -1,8 +1,8 @@
 package com.example.features.openweather
 
 import com.example.features.cities.model.Location
-import com.example.features.openweather.model.OpenWeatherCityForecast
 import com.example.features.openweather.model.OpenWeatherAllData
+import com.example.features.openweather.model.OpenWeatherCityForecast
 import com.example.features.openweather.model.OpenWeatherForecastData
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
@@ -99,12 +99,20 @@ object OpenWeatherRepository {
 
     //https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude={part}&appid={YOUR API KEY}
 
-    fun getWeatherOneCall(latitude: Double, longitude: Double, language: String, unit: String, exclude: String? = null) {
-        var url = "$API_WEATHER_ONE_CALL?lat=${latitude}&lon=${longitude}&lang=$language&units=$unit&appid=$API_WEATHER_KEY"
+    fun getWeatherOneCall(
+        latitude: Double,
+        longitude: Double,
+        language: String,
+        unit: String,
+        exclude: String? = null
+    ): OpenWeatherAllData {
+        var url =
+            "$API_WEATHER_ONE_CALL?lat=${latitude}&lon=${longitude}&lang=$language&units=$unit&appid=$API_WEATHER_KEY"
         exclude?.apply { url = "$url&exclude=$exclude" }
-        NewRequest()
+        return NewRequest()
             .url(url)
             .build()
+            .also { println(it.url.toString()) }
             .let {
                 Client()
                     .build()
@@ -114,7 +122,7 @@ object OpenWeatherRepository {
                     ?: throw RuntimeException("Error calling open weather")
 
             }
-            .run { mapper.readValue<OpenWeatherAllData>(this) }
+            .run { mapper.readValue(this) }
     }
 }
 
